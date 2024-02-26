@@ -1,0 +1,238 @@
+---
+import { Icon } from "astro-icon/components";
+import Layout from "../layouts/Layout.astro";
+import { XataClient } from "../xata";
+
+const xata = new XataClient({
+  apiKey: import.meta.env.XATA_API_KEY,
+  branch: import.meta.env.XATA_BRANCH,
+});
+
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const name = data.get("name");
+    const price = data.get("price");
+    const record = await xata.db.Insumos.create({
+      name: name,
+      price: price,
+    });
+    console.log(record);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
+
+const insumos = await xata.db.Insumos.getMany();
+---
+
+<Layout title="Insumos">
+  <main
+    class="w-full flex flex-col gap-4 relative top-24 md:top-2 items-center"
+  >
+    <div class="md:w-2/3 bg-white rounded-xl shadow-md w-fit mx-2">
+      <div class="md:flex p-4 md:mx-2 w-full">
+        <div class="p-2 container w-full">
+          <h1 class="text-2xl font-bold mb-2">Adicionar insumo</h1>
+          <form method="POST" action="insumos">
+            <div class="mb-4">
+              <label
+                class="block text-gray-700 text-sm font-bold mb-2"
+                for="name"
+              >
+                Nome
+              </label>
+              <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Nome"
+              />
+            </div>
+            <div class="mb-4">
+              <label
+                class="block text-gray-700 text-sm font-bold mb-2"
+                for="preço"
+              >
+                Preço
+              </label>
+              <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="price"
+                name="price"
+                type="text"
+                placeholder="Preço (R$)"
+                pattern="[0-9]+([,\.][0-9]+)?"
+              />
+            </div>
+            <div class="flex items-center justify-between">
+              <button
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="submit"
+              >
+                Enviar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex flex-col mx-2 md:w-2/3 bg-white rounded-xl shadow-md overflow-hidden h-fit"
+    >
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+          <div
+            class="shadow overflow-x-scroll border-b border-gray-200 sm:rounded-lg container"
+          >
+            <table class="min-w-full divide-y divide-gray-200 shadow">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Nome do Produto
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Preço
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Deletar
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200 flex-1">
+                {
+                  insumos.map((insumo) => (
+                    <tr x-data="insumos">
+                      <td class="px-6 py-1 whitespace-nowrap">
+                        <div
+                          x-show="showEditName"
+                          class="text-md text-gray-500"
+                          @click="showEditName = !showEditName"
+                        >
+                          <p>{insumo.name}</p>
+                          <button class="text-xs">
+                            <small>Editar</small>
+                          </button>
+                        </div>
+                        <div
+                          x-show="!showEditName"
+                          class="text-md text-gray-500 flex flex-col items-start"
+                        >
+                          <form method="POST" action="/api/insumos/edit">
+                            <input type="hidden" name="id" value={insumo.id} />
+                            <input
+                              type="text"
+                              class="text-sm text-gray-500 border-solid border-2 rounded-md p-1"
+                              name="name"
+                              x-model="newName"
+                            />
+                            <div class="flex justify-between w-full">
+                              <button
+                                type="button"
+                                class="text-xs"
+                                @click="showEditName = !showEditName"
+                              >
+                                <small>Cancelar</small>
+                              </button>
+                              <button
+                                type="submit"
+                                class="text-xs"
+                                @click="showEditName = !showEditName"
+                              >
+                                <small>Salvar</small>
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </td>
+                      <td class="px-6 py-1 whitespace-nowrap">
+                        <div
+                          x-show="showEditPrice"
+                          class="text-md text-gray-500"
+                          @click="showEditPrice = !showEditPrice"
+                        >
+                          <p>{insumo.price}</p>
+                          <button class="text-xs">
+                            <small>Editar</small>
+                          </button>
+                        </div>
+                        <div
+                          x-show="!showEditPrice"
+                          class="text-md text-gray-500 flex flex-col items-start"
+                        >
+                          <form method="POST" action="/api/insumos/edit">
+                            <input type="hidden" name="id" value={insumo.id} />
+                            <input
+                              type="text"
+                              class="text-md text-gray-500 border-solid border-2 rounded-md p-1 w-20"
+                              name="price"
+                              x-model="newPrice"
+                            />
+                            <div class="flex justify-between w-full">
+                              <button
+                                type="button"
+                                class="text-xs"
+                                @click="showEditPrice = !showEditPrice"
+                              >
+                                <small>Cancelar</small>
+                              </button>
+                              <button
+                                type="submit"
+                                class="text-xs"
+                                @click="showEditPrice !showEditPrice"
+                              >
+                                <small>Salvar</small>
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </td>
+                      <td class="px-6 py-1  whitespace-nowrap">
+                        <form method="POST" action="/api/insumos/delete">
+                          <input type="hidden" name="id" value={insumo.id} />
+                          <button
+                            class="border-solid bg-red-500 w-14 rounded-md p-1"
+                            type="submit"
+                          >
+                            <Icon
+                              name="trash"
+                              class="text-white text-xl mx-auto"
+                            />
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import Alpine from "alpinejs";
+
+  Alpine.data("insumos", () => ({
+    showEdit: false,
+    showEditName: true,
+    showEditPrice: true,
+    newName: "",
+    newPrice: "",
+  }));
+</script>

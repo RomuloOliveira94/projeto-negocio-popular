@@ -1,0 +1,11 @@
+{
+  "id": "mig_cneaih519en0dsgansog",
+  "checksum": "1:6f819c262136ee7879319c951206527e65ec64826f280be5ce0d865228b9dabb",
+  "operations": [
+    {
+      "addTable": {
+        "table": "insumos"
+      }
+    }
+  ]
+}

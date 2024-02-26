@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://R-mulo-Augusto-s-workspace-vhd5nl.us-east-1.xata.sh/db/negocio-popular",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}

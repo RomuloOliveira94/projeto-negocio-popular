@@ -1,0 +1,13 @@
+{
+  "id": "mig_cneaiq7h5qh9noi3kjl0",
+  "parentID": "mig_cneaih519en0dsgansog",
+  "checksum": "1:37285a707c91f9f397139e04774c88cc1bfb2c8dc29f6364d8444a985d104ba1",
+  "operations": [
+    {
+      "renameTable": {
+        "newName": "Insumos",
+        "oldName": "insumos"
+      }
+    }
+  ]
+}

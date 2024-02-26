@@ -1,0 +1,91 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/logo/logo-caseirinhos.png";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  storeName: string;
+}
+
+const { storeName } = Astro.props;
+
+const navBarOptions = [
+  {
+    name: "Insumos",
+    link: "/insumos",
+    icon: "nav/raw",
+  },
+  {
+    name: "Produtos",
+    link: "/produtos",
+    icon: "nav/product",
+  },
+  {
+    name: "Financeiro",
+    link: "/financeiro",
+    icon: "nav/finance",
+  },
+];
+---
+
+<header x-data="{openMenu : false}">
+  <!-- mobile menu bar -->
+  <div
+    class="fixed bg-purple-500 text-gray-100 flex justify-between md:hidden z-10 w-full"
+  >
+    <!-- logo -->
+    <a href="#" class="flex items-center gap-2 p-2 text-white font-bold"
+      ><Image
+        src={logo}
+        alt={storeName}
+        class="w-12 rounded-full border-solid border-2 border-white"
+      /><h1 class="text-2xl font-bold">{storeName}</h1></a
+    >
+
+    <!-- mobile menu button -->
+    <button
+      @click.outside="openMenu = false"
+      @click="openMenu = !openMenu"
+      class="mobile-menu-button p-4 focus:outline-none focus:bg-purple-600"
+    >
+      <Icon name="nav/hamburger" size={25} />
+    </button>
+  </div>
+
+  <!-- sidebar -->
+  <div
+    class="z-50 fixed md:h-full bg-purple-500 text-white w-64 space-y-6 py-7 px-2 inset-y-0 left-0 transform md:relative -translate-x-full md:translate-x-0 transition duration-200 ease-in-out"
+    :class="{ '-translate-x-full': !openMenu }"
+  >
+    <!-- logo -->
+    <a
+      href="#"
+      class="text-white flex flex-col items-center space-x-2 px-2 gap-2"
+    >
+      <Image
+        src={logo}
+        alt={"caseirinhos da nald"}
+        class="w-28 rounded-full border-solid border-2 border-white"
+        quality={100}
+      />
+      <h1 class="text-2xl font-bold">{storeName}</h1>
+    </a>
+
+    <!-- nav -->
+    <nav>
+      {
+        navBarOptions.map((option) => {
+          return (
+            <a
+              href={option.link}
+              class="flex items-center gap-4 p-2 rounded-md hover:bg-purple-600"
+            >
+              <Icon name={option.icon} size={25} />
+              <span class="text-lg font-semibold">{option.name}</span>
+            </a>
+          );
+        })
+      }
+    </nav>
+  </div>
+</header>
