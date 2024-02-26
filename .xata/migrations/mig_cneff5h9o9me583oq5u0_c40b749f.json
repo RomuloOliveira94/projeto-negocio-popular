@@ -1,0 +1,19 @@
+{
+  "id": "mig_cneff5h9o9me583oq5u0",
+  "parentID": "mig_cnefcop9o9me583oq5qg",
+  "checksum": "1:c40b749fab56128edcfbac0afb299646ee2778f4566e6fd6c1f2b0b084eef3d1",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "product_id",
+          "type": "link",
+          "link": {
+            "table": "Produtos"
+          }
+        },
+        "table": "Insumos"
+      }
+    }
+  ]
+}

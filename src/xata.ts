@@ -11,8 +11,19 @@ const tables = [
     name: "Insumos",
     columns: [
       { name: "name", type: "string" },
-      { name: "price", type: "string" },
+      { name: "product_id", type: "link", link: { table: "Produtos" } },
+      { name: "measured", type: "string" },
+      { name: "quantity", type: "string" },
+      { name: "price", type: "float" },
     ],
+  },
+  {
+    name: "Produtos",
+    columns: [
+      { name: "name", type: "string" },
+      { name: "value", type: "int", defaultValue: "0" },
+    ],
+    revLinks: [{ column: "product_id", table: "Insumos" }],
   },
 ] as const;
 
@@ -22,8 +33,12 @@ export type InferredTypes = SchemaInference<SchemaTables>;
 export type Insumos = InferredTypes["Insumos"];
 export type InsumosRecord = Insumos & XataRecord;
 
+export type Produtos = InferredTypes["Produtos"];
+export type ProdutosRecord = Produtos & XataRecord;
+
 export type DatabaseSchema = {
   Insumos: InsumosRecord;
+  Produtos: ProdutosRecord;
 };
 
 const DatabaseClient = buildClient();

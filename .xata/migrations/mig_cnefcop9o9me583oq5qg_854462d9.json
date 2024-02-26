@@ -1,0 +1,17 @@
+{
+  "id": "mig_cnefcop9o9me583oq5qg",
+  "parentID": "mig_cnefcjbuturo10a506o0",
+  "checksum": "1:854462d9532ca45d599816ba85b0f2c681c33a698a6dac34d545b4a57971bcbf",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "value",
+          "type": "int",
+          "defaultValue": "0"
+        },
+        "table": "Produtos"
+      }
+    }
+  ]
+}

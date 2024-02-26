@@ -1,7 +1,74 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { XataClient } from "../xata";
+
+const xata = new XataClient({
+  apiKey: import.meta.env.XATA_API_KEY,
+  branch: import.meta.env.XATA_BRANCH,
+});
+
+const products = await xata.db.Insumos.getMany();
+
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const insumo = data.get("insumo");
+    console.log(insumo);
+  } catch (error) {
+    console.error(error);
+  }
+}
 ---
 
 <Layout title="Produtos">
-  <h1>Produtos</h1>
+  <main
+    class="flex flex-col gap-5"
+    x-data="product"
+  >
+    <select name="insumo" id="insumo" x-model="insumo" required>
+      <option value="">Selecione um insumo</option>
+      {
+        products.map((insumo) => (
+          <option value={insumo as any}>{insumo.name}</option>
+        ))
+      }
+    </select>
+    <div>
+      <label for="quantidade" class="text-white"> Quantidade</label>
+      <input
+        type="number"
+        name="quantidade"
+        id="quantidade"
+        x-model="quantidade"
+      />
+    </div>
+    <select name="medida" id="medida" x-model="medida" required>
+      <option value="">Selecione uma medida</option>
+      <option value="kg">Kg</option>
+      <option value="lt">Litro(s)</option>
+      <option value="ml">Ml</option>
+      <option value="gr">Gramas</option>
+      <option value="un">Unidade</option>
+    </select>
+    <button class="bg-lime-800 text-white" @click="addInsumo()"
+      >Adicionar</button
+    >
+    <button @click="salvar()">Salvar Produto</button>
+    <div class="text-white">
+      <h2 class="text-white">Insumos</h2>
+      <ul>
+        <template x-for="insumo in insumos" :key="insumo.insumo.price">
+          <li>
+            <span x-text="insumo.insumo.name"></span>
+            <span x-text="insumo.quantidade"></span>
+            <span x-text="insumo.medida"></span>
+          </li>
+        </template>
+      </ul>
+    </div>
+    <div class="text-white">
+      <h2>Calculo</h2>
+      <p x-text="produto"></p>
+    </div>
+  </main>
 </Layout>

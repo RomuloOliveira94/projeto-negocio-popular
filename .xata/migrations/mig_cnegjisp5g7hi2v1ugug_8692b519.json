@@ -1,0 +1,16 @@
+{
+  "id": "mig_cnegjisp5g7hi2v1ugug",
+  "parentID": "mig_cnegj94p5g7hi2v1ugtg",
+  "checksum": "1:8692b51977c91bf0d740f2436675cad2b83e3456957b37abfd628cdf270b2268",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "price",
+          "type": "float"
+        },
+        "table": "Insumos"
+      }
+    }
+  ]
+}

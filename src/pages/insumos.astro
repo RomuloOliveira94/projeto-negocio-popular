@@ -13,9 +13,15 @@ if (Astro.request.method === "POST") {
     const data = await Astro.request.formData();
     const name = data.get("name");
     const price = data.get("price");
+    let quantidade = data.get("quantidade");
+    const medida = data.get("medida");
+    const formatedPrice = parseFloat(price as string);
+
     const record = await xata.db.Insumos.create({
       name: name,
-      price: price,
+      price: formatedPrice,
+      quantity: quantidade,
+      measured: medida,
     });
     console.log(record);
   } catch (error) {
@@ -63,10 +69,41 @@ const insumos = await xata.db.Insumos.getMany();
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="price"
                 name="price"
-                type="text"
+                type="number"
                 placeholder="Preço (R$)"
-                pattern="[0-9]+([,\.][0-9]+)?"
+                step="0.01"
               />
+            </div>
+            <div class="mb-4 flex gap-4 items-center">
+              <div>
+                <label
+                  for="quantidade"
+                  class="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Quantidade
+                </label>
+                <input
+                  type="number"
+                  name="quantidade"
+                  id="quantidade"
+                  class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+              <div class="self-end">
+                <select
+                  name="medida"
+                  id="quantidade"
+                  class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  required
+                >
+                  <option value="">Medida</option>
+                  <option value="kg">Kg</option>
+                  <option value="lt">Litro(s)</option>
+                  <option value="ml">Ml</option>
+                  <option value="gr">Gramas</option>
+                  <option value="un">Unidade</option>
+                </select>
+              </div>
             </div>
             <div class="flex items-center justify-between">
               <button
@@ -175,7 +212,7 @@ const insumos = await xata.db.Insumos.getMany();
                           <form method="POST" action="/api/insumos/edit">
                             <input type="hidden" name="id" value={insumo.id} />
                             <input
-                              type="text"
+                              type="number"
                               class="text-md text-gray-500 border-solid border-2 rounded-md p-1 w-20"
                               name="price"
                               x-model="newPrice"

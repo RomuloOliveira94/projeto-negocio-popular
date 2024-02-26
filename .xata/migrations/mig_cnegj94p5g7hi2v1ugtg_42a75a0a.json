@@ -1,0 +1,13 @@
+{
+  "id": "mig_cnegj94p5g7hi2v1ugtg",
+  "parentID": "mig_cnefklp9o9me583oq620",
+  "checksum": "1:42a75a0a91663a820e6272a5bb2422da5027e95a715498623249ce8277acb210",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "price",
+        "table": "Insumos"
+      }
+    }
+  ]
+}

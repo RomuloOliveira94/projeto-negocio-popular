@@ -1,0 +1,16 @@
+{
+  "id": "mig_cnefklp9o9me583oq620",
+  "parentID": "mig_cnefkj19o9me583oq610",
+  "checksum": "1:e8a7f376a480d4bbc5cb38f496440dfeb3d77fdac081d9da12fdab4d5e61d97e",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "quantity",
+          "type": "string"
+        },
+        "table": "Insumos"
+      }
+    }
+  ]
+}
