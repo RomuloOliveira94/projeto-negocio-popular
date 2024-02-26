@@ -1,0 +1,13 @@
+{
+  "id": "mig_cnei22kp5g7hi2v1uh70",
+  "parentID": "mig_cnegjisp5g7hi2v1ugug",
+  "checksum": "1:aa44a0e41b29555e23c19e89d6429516a9a435fa203bb5d8add6f56368c06068",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "value",
+        "table": "Produtos"
+      }
+    }
+  ]
+}

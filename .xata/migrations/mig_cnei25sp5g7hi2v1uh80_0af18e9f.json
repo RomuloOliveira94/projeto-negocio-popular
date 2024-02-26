@@ -1,0 +1,16 @@
+{
+  "id": "mig_cnei25sp5g7hi2v1uh80",
+  "parentID": "mig_cnei22kp5g7hi2v1uh70",
+  "checksum": "1:0af18e9f651f2939ca8b0ffc87117883182fe3fa7c40b5803daafdc8282371d6",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "price",
+          "type": "float"
+        },
+        "table": "Produtos"
+      }
+    }
+  ]
+}

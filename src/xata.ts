@@ -21,7 +21,7 @@ const tables = [
     name: "Produtos",
     columns: [
       { name: "name", type: "string" },
-      { name: "value", type: "int", defaultValue: "0" },
+      { name: "price", type: "float" },
     ],
     revLinks: [{ column: "product_id", table: "Insumos" }],
   },

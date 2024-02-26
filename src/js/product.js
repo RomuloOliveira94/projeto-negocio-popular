@@ -4,11 +4,13 @@ Alpine.data("product", () => ({
   insumo: "",
   quantidade: "",
   medida: "",
+  name: "",
   insumos: [],
   produto: "",
   calcular() {
-    this.produto = this.insumos
-      .reduce((acc, insumo) => {
+    this.produto = {
+      name: this.name,
+      price: this.insumos.reduce((acc, insumo) => {
         const insumoDbCheck =
           insumo.insumo.measured === "kg" || insumo.insumo.measured === "lt";
         const insumoCheck = insumo.medida === "kg" || insumo.medida === "lt";
@@ -40,11 +42,8 @@ Alpine.data("product", () => ({
           (Number(insumo.insumo.price) / Number(insumo.insumo.quantity)) *
           insumo.quantidade;
         return acc;
-      }, 0)
-      .toLocaleString("pt-br", {
-        style: "currency",
-        currency: "BRL",
-      });
+      }, 0),
+    };
     console.log(this.produto);
   },
   addInsumo() {
@@ -52,6 +51,7 @@ Alpine.data("product", () => ({
       insumo: JSON.parse(this.insumo),
       medida: this.medida,
       quantidade: this.quantidade,
+      name: this.name,
     });
     this.insumo = "";
     this.medida = "";
@@ -62,7 +62,11 @@ Alpine.data("product", () => ({
   salvar() {
     fetch("/api/produtos/adicionar", {
       method: "POST",
-      body: JSON.stringify(this.insumos),
+      body: JSON.stringify(this.produto),
     });
+    this.insumo = "";
+    this.medida = "";
+    this.quantidade = "";
+    this.name = "";
   },
 }));

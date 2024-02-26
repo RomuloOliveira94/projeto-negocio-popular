@@ -21,10 +21,20 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout title="Produtos">
-  <main
-    class="flex flex-col gap-5"
-    x-data="product"
-  >
+  <main class="flex flex-col gap-5" x-data="product">
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+        Nome
+      </label>
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="name"
+        name="name"
+        x-model="name"
+        type="text"
+        placeholder="Nome"
+      />
+    </div>
     <select name="insumo" id="insumo" x-model="insumo" required>
       <option value="">Selecione um insumo</option>
       {
@@ -53,11 +63,11 @@ if (Astro.request.method === "POST") {
     <button class="bg-lime-800 text-white" @click="addInsumo()"
       >Adicionar</button
     >
-    <button @click="salvar()">Salvar Produto</button>
+    <button @click="salvar()" class="bg-slate-200">Salvar Produto</button>
     <div class="text-white">
       <h2 class="text-white">Insumos</h2>
       <ul>
-        <template x-for="insumo in insumos" :key="insumo.insumo.price">
+        <template x-for="insumo in insumos" :key="insumo.insumo.id">
           <li>
             <span x-text="insumo.insumo.name"></span>
             <span x-text="insumo.quantidade"></span>
@@ -68,7 +78,13 @@ if (Astro.request.method === "POST") {
     </div>
     <div class="text-white">
       <h2>Calculo</h2>
-      <p x-text="produto"></p>
+      <p
+        x-text="produto.price.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        })"
+      >
+      </p>
     </div>
   </main>
 </Layout>
